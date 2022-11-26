@@ -1,0 +1,215 @@
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+      body{
+        background-image:linear-gradient(white,rgb(114, 237, 137));
+      }
+      .center_div{
+        margin: 0 auto;
+          width:80% /* value of your choice which suits your alignment */
+      }
+            
+      #add-btn2{
+        margin:0 auto;
+        width:20%;
+      }
+      
+      #add-form{
+        display: none;
+        
+      }
+      #update-form{
+        display: none;
+      }
+      table th {
+        text-align: center; 
+      }
+      button{
+        width:80%;
+
+      }
+      .table {
+          
+        margin-left: 250px;
+  
+        width: 100% !important; 
+        border: 1px solid black;
+      }
+      table.table-bordered{
+    border:1px solid black;
+    margin-top:20px;
+  }
+table.table-bordered > thead > tr > th{
+    border:1px solid black;
+}
+table.table-bordered > tbody > tr > td{
+    border:1px solid black;
+}
+    </style>
+    <title>Dashboard</title>
+  </head>
+  <body>
+    <!-- <form action="{{ url_for("update")}}" method = 'post'>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Update Stocks</button>
+      </div>
+
+    </form> -->
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="{{ url_for("home") }}">Inventario</a>
+        </div>
+       
+        <ul class="nav navbar-nav navbar-right">
+          
+          <li><a href="{{ url_for("logout") }}"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+        </ul>
+      </div>
+    </nav>
+  
+    <div class="d-flex justify-content-center align-items-center" style="margin-top:100px;">
+      <div class="text-center">
+        <h1 class="mb-3">Dashboard</h1>
+        
+      </div>
+    </div>
+
+    <!-- <h3 style="text-align:center;margin-top:100px;">Dashboard</h3> -->
+    <div class="row" style="margin-top:50px;">
+      <div class="col-lg-4 col-md-4" style="text-align:center;">
+        <button class="btn btn-success btn-md" id="add-btn">Add new Stock</button>
+      </div>
+      <div class="col-lg-4 col-md-4" style="text-align:center;">
+        <div class="dropdown">
+          <button class="btn btn-success btn-md dropdown-toggle" id="del-btn" type="button" data-toggle="dropdown">Delete
+          <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            {% for i in data %}
+              <li><a href="{{ url_for('delete',sname = i.sname )}}">{{ i['sname'] }}</a></li>
+              
+              
+            {% endfor %}
+            
+            
+          </ul>
+        </div>
+      </div><div class="col-lg-4 col-md-4" style="text-align:center;">
+        <button class="btn btn-success btn-md" id="update-btn">Update New Stock</button>
+      </div>
+    </div>
+    
+    
+    
+    <div class="row" id='center' style="margin-top:50px;">
+      <div class="col-lg-8">
+        <table class="table table-bordered" id="item-list">
+          <thead>
+            <tr>
+              <th>Stock Name</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in data %}
+              <tr>
+                <td>{{ i['sname'] }}</td>
+                <td>{{ i['qty'] }}</td>
+                
+              </tr>
+              
+            {% endfor %}
+            
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    
+    
+      
+    
+    <form class="container center_div" action="{{ url_for("add")}}" method = 'post' id="add-form">
+      <div class="form-group">
+        <label for="exampleInputEmail2">Name of the stock</label>
+        <input type="text" class="form-control" id="exampleInputEmail2" name='sname' aria-describedby="emailHelp" placeholder="Enter the stock name">
+        
+      </div>
+     
+      <div class="form-group">
+        <label for="exampleInputPassword1">Quantity</label>
+        <input type="text" class="form-control" id="exampleInputPassword1"  name='qty' placeholder="Enter the quantity">
+      </div>
+      <div class="text-center">
+        <button type="submit" class="btn btn-success" id="add-btn2">Add</button>
+
+      </div>
+      
+    
+
+    </form>
+    <form class="container center_div" action="{{ url_for("update")}}" method = 'post' id="update-form">
+      <div class="form-group">
+        <label for="exampleInputEmail2">Name of the stock</label>
+        <input type="text" class="form-control" id="exampleInputEmail2" name='sname' aria-describedby="emailHelp" placeholder="Enter the stock name">
+        
+      </div>
+     
+      <div class="form-group">
+        <label for="exampleInputPassword1">Quantity</label>
+        <input type="text" class="form-control" id="exampleInputPassword1"  name='qty' placeholder="Enter the quantity">
+      </div>
+      <div class="text-center">
+        <button type="submit" class="btn btn-success" id="add-btn2">Update</button>
+
+      </div>
+    
+
+    </form>
+
+    <script>
+      var addbtn = document.getElementById('add-btn');
+      var delbtn = document.getElementById('del-btn');
+      var updatebtn = document.getElementById('update-btn');
+      var ilist = document.getElementById('item-list');
+      var addform = document.getElementById('add-form');
+      var updateform  = document.getElementById('update-form')
+      addbtn.addEventListener('click',function(){
+        ilist.style.display = 'none'
+        updateform.style.display = 'none'
+        addform.style.display = 'block'
+
+      })
+      updatebtn.addEventListener('click',function(){
+        ilist.style.display = 'none'
+        addform.style.display = 'none'
+        updateform.style.display = 'block'
+      })
+    
+  window.watsonAssistantChatOptions = {
+    integrationID: "94b95052-81b8-4f11-8740-019346661609", // The ID of this integration.
+    region: "au-syd", // The region your integration is hosted in.
+    serviceInstanceID: "188c38a7-fe9a-4c3e-8381-4e7f7952dcc4", // The ID of your service instance.
+    onLoad: function(instance) { instance.render(); }
+  };
+  setTimeout(function(){
+    const t=document.createElement('script');
+    t.src="https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + (window.watsonAssistantChatOptions.clientVersion || 'latest') + "/WatsonAssistantChatEntry.js";
+    document.head.appendChild(t);
+  });
+
+    </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
